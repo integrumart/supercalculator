@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Super Calculator 1.0\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "Calculator"
+msgstr "Hesap Makinesi"
+
+msgid "Simple Calculator"
+msgstr "Süper Hesap Makinesi"
+
+msgid "Open Calculator"
+msgstr "Hesap Makinesini Aç"
+
+msgid "Calculate"
+msgstr "Hesapla"
+
+msgid "&Calculate"
+msgstr "&Hesapla"
+
+msgid "Donate to Support"
+msgstr "Destek için Bağış Yap"
+
+msgid "Opens a simple calculator dialog."
+msgstr "Basit bir hesap makinesi diyaloğu açar."
+
+msgid "Enter the operation (e.g. 5+5):"
+msgstr "İşlemi girin (örn: 5+5):"
+
+msgid "Result: {}"
+msgstr "Sonuç: {}"
+
+msgid "Invalid operation"
+msgstr "Geçersiz işlem"
+
+msgid "Opens the donation page to support the developer."
+msgstr "Geliştiriciyi desteklemek için bağış sayfasını açar."
+
+msgid "Opening donation page... Thank you for your support!"
+msgstr "Bağış sayfası açılıyor... Desteğiniz için teşekkürler!"
