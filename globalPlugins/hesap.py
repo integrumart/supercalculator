@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-# Simple Calculator for NVDA
+# Super Calculator for NVDA
+# Version: 1.0
 # Author: Volkan Ozdemir Software Services
-# Website: https://www.volkan-ozdemir.com.tr
-# Donation: https://www.paytr.com/link/N2IAQKm
 
 import ui
 import wx
@@ -18,69 +17,62 @@ from languageHandler import gettext as _
 addonHandler.initTranslation()
 
 class CalculatorDialog(gui.SettingsDialog):
-	title = _("Simple Calculator")
+	title = _("Super Calculator")
 
 	def makeSettings(self, settingsSizer):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 		
-		# İşlem giriş alanı
+		# Input field
 		self.operationEdit = sHelper.addLabeledControl(_("Enter the operation (e.g. 5+5):"), wx.TextCtrl)
 		self.operationEdit.SetFocus()
 		
-		# Hesapla butonu
+		# Calculate button
 		self.calcBtn = wx.Button(self, label=_("&Calculate"))
 		self.calcBtn.Bind(wx.EVT_BUTTON, self.onCalculate)
 		settingsSizer.Add(self.calcBtn)
 		
-		# Enter tuşu desteği
+		# Enter key support
 		self.operationEdit.SetWindowStyle(wx.TE_PROCESS_ENTER)
 		self.operationEdit.Bind(wx.EVT_TEXT_ENTER, self.onCalculate)
 
 	def onCalculate(self, event):
 		val = self.operationEdit.Value
 		try:
-			# Temel 4 işlem için güvenli matematik
+			# Secure math for basic operations
 			result = eval(val, {"__builtins__": None}, {})
 			msg = _("Result: {}").format(result)
-			# Pencere kapanmadan sonucu hem söyler hem mesaj kutusunda gösterir
 			speech.speakMessage(msg)
 			ui.message(msg)
-			# Yeni işlem için alanı temizle ve odakla
 			self.operationEdit.SetFocus()
 			self.operationEdit.SetSelection(-1, -1)
 		except Exception:
-			error_msg = _("Invalid operation")
-			speech.speakMessage(error_msg)
-			ui.message(error_msg)
+			errorMsg = _("Invalid operation")
+			speech.speakMessage(errorMsg)
+			ui.message(errorMsg)
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
-	scriptCategory = _("Calculator")
+	scriptCategory = _("Super Calculator")
 
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		self.createMenu()
 
 	def createMenu(self):
-		# NVDA Ana Menüsünü Al
 		self.menu = gui.mainFrame.sysTrayIcon.menu
-		# Alt Menü Oluştur
-		self.calc_menu = wx.Menu()
+		self.calcMenu = wx.Menu()
 		
-		# Menü Öğelerini Ekle
-		item_open = self.calc_menu.Append(wx.ID_ANY, _("Open Calculator"))
-		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onOpenCalc, item_open)
+		itemOpen = self.calcMenu.Append(wx.ID_ANY, _("Open Super Calculator"))
+		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onOpenCalc, itemOpen)
 		
-		item_donate = self.calc_menu.Append(wx.ID_ANY, _("Donate to Support"))
-		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onDonate, item_donate)
+		itemDonate = self.calcMenu.Append(wx.ID_ANY, _("Donate to Support"))
+		gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onDonate, itemDonate)
 		
-		# WordPress Manager gibi doğrudan ana menüye/araçlara ekle
-		self.main_item = self.menu.AppendSubMenu(self.calc_menu, _("Simple Calculator"))
+		self.mainItem = self.menu.AppendSubMenu(self.calcMenu, _("Super Calculator"))
 
 	def onOpenCalc(self, evt):
-		# Menüden tıklandığında diyaloğu güvenli şekilde aç
-		wx.CallAfter(self.open_calc_dialog)
+		wx.CallAfter(self.openCalcDialog)
 
-	def open_calc_dialog(self):
+	def openCalcDialog(self):
 		d = CalculatorDialog(gui.mainFrame)
 		d.Show()
 
@@ -88,23 +80,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		webbrowser.open("https://www.paytr.com/link/N2IAQKm")
 
 	@script(
-		description=_("Opens a simple calculator dialog."),
-		category=_("Calculator")
+		description=_("Opens the Super Calculator dialog."),
+		category=_("Super Calculator")
 	)
 	def script_openCalculator(self, gesture):
-		# Girdi hareketlerinden tetiklendiğinde
-		self.open_calc_dialog()
-
-	@script(
-		description=_("Opens the donation page to support the developer."),
-		category=_("Calculator")
-	)
-	def script_openDonationPage(self, gesture):
-		webbrowser.open("https://www.paytr.com/link/N2IAQKm")
-		ui.message(_("Opening donation page... Thank you for your support!"))
+		self.openCalcDialog()
 
 	def terminate(self):
 		try:
-			self.menu.Remove(self.main_item)
+			self.menu.Remove(self.mainItem)
 		except:
 			pass
